@@ -1,0 +1,344 @@
+###################################################
+Question 7 Train an HMM with the same parameter dimensions as above, i.e. A should be a 3
+times 3 matrix, etc. Initialize your algorithm with the following matrices:
+
+Does the algorithm converge? 
+	When the number of observations are 10 000, the algorithm converges
+	after 15 114 iterations.
+	When there are fewer observations, the number of iterations are fewer
+	but the result is not as good:
+	
+	#obs	#iter	distance
+	
+	The result that they converge to (after being rounded up a bit):
+
+	A =~
+	1.0 0.0 0.0 
+	0 0.7 0.3 
+	0 0.13 0.87 
+	
+	B =~
+	1.0 0.0 0.0 0.0 
+	0.71 0.18 0.09 0.02 
+	0.07 0.32 0.25 0.36 
+
+	pi =~
+	0.0 0 1.0 
+	
+	So all of the cases mentioned above sort of converge to the model above.
+	It might be that this is a local optimum, or that it's just another model
+	that fits those observations.
+
+	While when the number of observations are 10 000, the result is (after being rounded up):
+	
+	A
+	0.7 0.04 0.26 
+	0.12 0.75 0.14 
+	0.15 0.26 0.59 
+
+	B
+	0.7 0.18 0.1 0
+	0.1 0.42 0.31 0.17 
+	0.03 0.17 0.19 0.61 
+	
+	pi
+	0.0 1.0 0
+
+	which is a lot closer to the actual model the observations were made off of (although pi is off):
+	
+	A	
+	0.7 0.05 0.25
+	0.1 0.8 0.1
+	0.2 0.3 0.5
+	
+	B
+	0.7 0.2 0.1 0
+	0.1 0.4 0.3 0.2
+	0 0.1 0.2 0.7
+
+	π
+	1 0 0
+
+	#obs	#iter	distance
+	200		777		3.3932453850932562
+	400		480		3.940728004675241
+	600		508		3.9269251644455982
+	800		580		4.0300381506594505
+	1000		2633		4.0982664533705115
+	1200		3009		4.139182876051924
+	1400		5781		4.774245879731182
+	1600		4565		4.638831089841972
+	1800		2765		4.685228269474001
+	2000		1885		4.546704163763184
+	2200		3249		3.9694408367536154
+	2400		3181		4.197963833470984
+	2600		7580		4.228262852310543
+	2800		10607		4.2569830312035
+	3000		17887		4.125427126858937
+	3200		17231		4.18603921334975
+	3400		8450		3.9666325771253614
+	3600		47876		3.889626915238833
+	3800		14564		3.851808602159286
+	4000		4515		3.1974391699041913
+	4200		3006		3.0206664184906087
+	4400		3328		2.8066973693966726
+	4600		3651		2.7770189960142164
+	4800		3017		2.6285369973285153
+	5000		3120		2.6959555973385956
+	5200		2967		2.7783709944819694
+	5400		2586		2.809022517709207
+	5600		2716		2.7156209958943918
+	5800		2336		2.9231885064283
+	6000		5593		3.2555769460059936
+	6200		4282		3.1906588807551177
+	6400		4389		3.141618711536096
+	6600		4678		3.2951782577032604
+	6800		4327		3.298044793329371
+	7000		3534		3.123634339553174
+	7200		3171		3.05529296154302
+	7400		3689		3.051941785580196
+	7600		3819		3.1055448137123465
+	7800		4149		3.0203539146792275
+	8000		3363		2.9280973452607326
+	8200		3201		2.8605954778186504
+	8400		3335		2.872970861779709
+	8600		15270		2.8764933571748914
+	8800		5035		2.7722667849643132
+	9000		3907		2.7636885041688197
+	9200		9658		2.809721870903073
+	9400		7722		2.7846377415241155
+	9600		4327		2.607642103626223
+	9800		6010		2.56939274352904
+	10000		15114		2.6083846570811575
+
+	
+How many observations do you need for the algorithm to con-
+verge?
+	If I put in just one observation, it converges in the sense
+	that the probability stops improving almost immediately, 
+	ie the curve "flattens out" and it doesn't iterate forever.
+	However, the answer is obviously wrong (the A matrix is just
+	a bunch of NaN-values/non-values).
+	
+	The number of observations needed for it to converge AND
+	for the answer to look more reasonable/numeric is two.
+	Here the first two observations are both 2 and therefore
+	the B answer is very biased to see just 2:
+	0.0 0.0 1.0 0.0 
+	0.0 0.0 1.0 0.0 
+	0.0 0.0 1.0 0.0 
+	
+	So with two observations, the algorithm converges and gives
+	a numeric answer. However, the answer is very far from the
+	actual model since we do not have enough observations to
+	infer it.
+	
+How can you define convergence?
+	Convergence can be defined as the moment when the highest
+	probability has been obtained, i.e. the probability
+	isn't increasing anymore but has flattened out. This might
+	happen at the global optimum, but can also happen at a local
+	optimum (since the HMM doesn't ensure against this).
+
+
+###################################################
+Question 8 Train an HMM with the same parameter dimensions as above, i.e. A is a 3x3 matrix
+etc. The initialization is left up to you.
+
+How close do you get to the parameters above, i.e. how close do you get to the generating
+parameters in Eq. 3.1? 
+	
+	#obs	#iter	distance
+	200		2114		8.246397051675473
+	400		1306		7.348676999161036
+	600		2615		5.744340019662056
+	800		1293		7.408150450307828
+	1000		7164		4.098264671586748
+	1200		2629		6.966010637727511
+	1400		5968		5.922096476774049
+	1600		2403		6.245250902457511
+	1800		6499		6.291504398713713
+	2000		1639		5.1296041491638515
+	2200		2454		5.184749533090065
+	2400		4207		4.969006494054001
+	2600		10885		4.973219448291136
+	2800		10111		4.968724555269204
+	3000		10338		6.990938177334906
+	3200		19700		6.340941269918123
+	3400		9100		5.567116107029737
+	3600		49421		3.889628248646141
+	3800		15673		3.8518085507171396
+	4000		5551		3.5896588783400154
+	4200		7935		6.4111715878791005
+	4400		2769		2.806704291612482
+	4600		5334		6.752222948046906
+	4800		4445		6.259447550187504
+	5000		5132		5.19062642116308
+	5200		3455		5.161808318724104
+	5400		2976		2.809022471254784
+	5600		3372		6.13092959386566
+	5800		5582		5.103218869956054
+	6000		5495		6.2351859165714245
+	6200		3085		7.193843024113374
+	6400		6437		6.46134746718988
+	6600		4686		6.874996064512207
+	6800		4220		3.298050003686828
+	7000		6751		4.9475209639035
+	7200		4392		6.476877029608962
+	7400		26505		7.471492269723079
+	7600		4615		4.980670924926554
+	7800		6216		3.525507070394385
+	8000		3936		3.499934234214804
+	8200		3659		2.860595340319323
+	8400		15332		5.722380849810431
+	8600		16126		3.5185503439531156
+	8800		5620		4.596620600636652
+	9000		4306		3.475201848938519
+	9200		7745		5.2307746535669954
+	9400		7992		2.7846376828872312
+	9600		11301		5.241684412867568
+	9800		5804		6.108951481927674
+	10000		5333		5.81846516496403
+
+
+	The closest I get is about 5.8 where that is the sum of the
+	distance between the A matrices, the B matrices and the pi matrices.
+	
+What is the problem when it comes to estimating the distance between
+these matrices? How can you solve these issues?
+	I define the distances between the matrices as the sum of the absolute 
+	value of the distance of each value in the matrices. I'm not sure
+	what problem you are talking about.
+	
+###################################################	
+Question 9 Train an HMM with different numbers of hidden states.
+What happens if you use more or less than 3 hidden states? Why?
+	If I use less than 3 hidden states (I tried 2) then the algorithm
+	converges more quickly, usually. If I use more than 3 (I tried 5) it takes a 
+	lot longer. (In both cases I still had 4 possible observations and
+	an observation sequence of 10000.) In the 2 state situation it took
+	approx 600 iterations, in the 5 state it took approx 15 000 - 16 000. 
+	They also (of course) landed in very different solutions.
+	
+	Of course, having only one state or only one possible observation would
+	be ridiculous and would not fullfil the properties of an HMM.
+		
+
+Are three hidden states and four observations the best choice? If not, why?
+	It all depends on what kind of system you are trying to model. However,
+	the less states and less number of observations, the more simplistic the 
+	model will become. The more states and type of observations, the longer
+	time it takes to converge (because the model needs to take more variables 
+	into account, and thus becomes more complex).
+
+
+How can you determine the optimal setting? How does this depend on the amount of data you have?
+	The more data I have, the more I will be able to tell which states and 
+	observations are important. If, for instance, I see that there is one state
+	that the other states almost never go to, I could maybe decide that it isn't an
+	important state to take into consideration. If I see that there is one observation
+	that is almost never observed in any of the states, I could maybe neglect to use
+	that sort of observation, because it happens so rarely. Those are my spontaneous thoughts.
+	
+	In the book they have an example with a vacuum robot. It can be programmed to move
+	by its own accord with an HMM, so it makes the floor a grid and thus the state
+	represents (in a discrete sense) where in the room the robot is and the direction which it is going in.
+	Thus it might actually need quite a lot of hidden states - upwards of 28 000.
+	
+	
+
+###################################################
+Question 10 Initialize your Baum-Welch algorithm with a uniform distribution. How does this
+effect the learning?
+	If by "uniform distribution", you mean "every value is completely uniform in the row"
+	then the result is this:
+	
+	// initialised parameters
+	
+	A
+	0.3333333333333333 0.3333333333333333 0.3333333333333333 
+	0.3333333333333333 0.3333333333333333 0.3333333333333333 
+	0.3333333333333333 0.3333333333333333 0.3333333333333333 
+
+	B
+	0.25 0.25 0.25 0.25 
+	0.25 0.25 0.25 0.25 
+	0.25 0.25 0.25 0.25 
+
+	pi
+	0.3333333333333333 0.3333333333333333 0.3333333333333333 
+
+	--------------------
+	#obs	#iter	dist
+	10000 3 		5.533333333332954
+
+	// result
+	
+	A
+	0.3333333333332371 0.3333333333332371 0.3333333333332371 
+	0.3333333333332371 0.3333333333332371 0.3333333333332371 
+	0.3333333333332371 0.3333333333332371 0.3333333333332371 
+
+	B
+	0.2641999999999775 0.2698999999999775 0.20849999999997784 0.25739999999997754 
+	0.2641999999999775 0.2698999999999775 0.20849999999997784 0.25739999999997754 
+	0.2641999999999775 0.2698999999999775 0.20849999999997784 0.25739999999997754 
+
+	pi
+	0.33333333333333326 0.33333333333333326 0.33333333333333326 
+
+	Basically, the model doesn't change that much at all and converges
+	almost immediately. This is a pretty indifferent model -- it is equally likely
+	to start in any state, from any state it is equally likely that you go
+	to any of the other states and for each state each observation is as likely
+	as any other. It might be that this model is so indifferent that it works
+	for any observation sequence and thus serves as a sort of local optimum.
+	
+	If by "uniform distribution" you mean that each value is a random value from
+	a uniform distribution, then that is what I've done in my initialisation before,
+	and if I google around it seems to be a pretty standard way of initialising the 
+	parameters.
+	
+
+Initialize your Baum-Welch algorithm with a diagonal A matrix and π = [0, 0, 1]. How does this
+effect the learning?
+	The result of that is that we stay in state 2 forever. This means that we don't get information
+	about the other states, and the result in the first iteration is this:
+	
+	A
+	NaN NaN NaN 
+	NaN NaN NaN 
+	0.0 0.0 1.0 
+
+	B
+	NaN NaN NaN NaN 
+	NaN NaN NaN NaN 
+	0.0 0.0 0.0 1.0 
+
+	pi
+	0.0 0.0 1.0 
+
+	Then eventually the answer just converges to NaN in all matrices.
+
+Initialize your Baum-Welch algorithm with A matrices that are close to the solution. How does
+this effect the learning?	
+	Makes it go quicker and get closer to the result.
+	
+	With the parameters you gave us:
+	#obs #iter dist
+	10000 15114 2.6083846570811575
+	
+	With parameters close to the truth:
+	#obs #iter dist
+	10000 3091 0.6288833866443069
+
+	THat is, fewer iterations and shorter distance (dist) to the
+	real answer.
+
+	
+	
+	
+	
+	
+	
+
